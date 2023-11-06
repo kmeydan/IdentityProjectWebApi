@@ -30,50 +30,11 @@ namespace IdentityProjectWebApi.Controllers
 		{
 			return View();
 		}
-		public IActionResult Login()
-		{
-			return View(new UserViewModel());
-		}
-		[HttpPost]
-		public async Task<IActionResult> Login(UserViewModel model)
-		{
-			if (!ModelState.IsValid)
-			{
-				ModelState.AddModelError("", "Validasyon Hatası");
-				return View();
-			}
-			var user = await _userManager.FindByEmailAsync(model.EMail);
-			if (user == null)
-			{
-				ModelState.AddModelError("", "E-mail e ait kullanıcı bulunamadı.");
-				return View(model);
-			}
-			if (user.LockoutEnabled==false)
-			{
-				ModelState.AddModelError("", "Hesabınız Aktif Değil");
-				return View();
-			}
-
-			var result = await _signInManager.PasswordSignInAsync(user, model.Sifre, model.RememberMe, false);
-			if (result.Succeeded)
-			{
-				return RedirectToAction("Index", "Account");
-
-			}
-			else
-			{
-				ModelState.AddModelError(string.Empty, "Şifre Hatalı");
-				return View();
-			}
-
-
-		}
-
 		public async Task<IActionResult> Logout()
 		{
 			await _signInManager.SignOutAsync();
 			await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-			return RedirectToAction("Index","Home");
+			return RedirectToAction("Index", "Home");
 		}
 		public IActionResult Register()
 		{
@@ -114,7 +75,7 @@ namespace IdentityProjectWebApi.Controllers
 			if (result.Succeeded)
 			{
 				ViewBag.Message = "Kayıt Başarılı";
-				return RedirectToAction("Login");
+				return RedirectToAction("Users");
 
 			}
 			else
@@ -128,7 +89,7 @@ namespace IdentityProjectWebApi.Controllers
 		}
 		public IActionResult Users()
 		{
-			
+
 			var models = new UserLists { Users = _userManager.Users.ToList() };
 			return View(models);
 		}
@@ -165,7 +126,7 @@ namespace IdentityProjectWebApi.Controllers
 		public async Task<IActionResult> Detail(string id)
 		{
 			var model = await _userManager.FindByIdAsync(id);
-			var modelgüncel=new AdminUserUpdatedViewModel() { Email= model.Email ,Id=model.Id,PhoneNumber=model.PhoneNumber,Username=model.UserName,Inaktif=model.LockoutEnabled};
+			var modelgüncel = new AdminUserUpdatedViewModel() { Email = model.Email, Id = model.Id, PhoneNumber = model.PhoneNumber, Username = model.UserName, Inaktif = model.LockoutEnabled };
 			return View(modelgüncel);
 		}
 		[HttpPost]
@@ -177,11 +138,19 @@ namespace IdentityProjectWebApi.Controllers
 				ModelState.AddModelError("", "Validasyon Hatası");
 				return View();
 			}
-			if (model.Password!=null&&model.RePassword!=null)
+			if (model.Password != null && model.RePassword != null)
 			{
 				//buraya password yenileme yapılıcak
+				var removePassword = await _userManager.RemovePasswordAsync(result);
+				var newPassword = await _userManager.AddPasswordAsync(result,model.Password);
+				if (!newPassword.Succeeded)
+				{
+                    newPassword.Errors.ToList().ForEach(error => ModelState.AddModelError(error.Code, error.Description));
+					return View();
+				}
 			}
-			if (model.Inaktif==false)
+			//inaktif durumu kontrolü değişimi
+			if (model.Inaktif == false)
 			{
 				//Hesap İnaktif İşaretlendiyse Kapat
 				var inaktif = await _userManager.SetLockoutEnabledAsync(result, false);
@@ -204,19 +173,20 @@ namespace IdentityProjectWebApi.Controllers
 					}
 
 				}
-				
+
 			}
-			result.Email= model.Email;
-			result.PhoneNumber= model.PhoneNumber;
+			//inaktif
+			result.Email = model.Email;
+			result.PhoneNumber = model.PhoneNumber;
 			result.UserName = model.Username;
 
-			var resultUpdate=_userManager.UpdateAsync(result);
+			var resultUpdate = _userManager.UpdateAsync(result);
 			if (!resultUpdate.Result.Succeeded)
 			{
 				resultUpdate.Result.Errors.ToList().ForEach(x => ModelState.AddModelError(x.Code, x.Description));
 				return View();
 			}
-			
+
 			return RedirectToAction("Users");
 		}
 

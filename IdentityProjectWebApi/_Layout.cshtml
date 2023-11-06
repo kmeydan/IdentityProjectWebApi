@@ -14,7 +14,7 @@
 		<div class="container-fluid">
 			@if (User.Identity.IsAuthenticated)
 			{
-				<a class="navbar-brand" asp-action="Index" asp-controller="Home">Hoşgeldin @User.Identity.Name</a>
+				<a class="navbar-brand" asp-action="Index" asp-controller="Home">@User.Identity.Name</a>
 
 			}
 			else
@@ -48,10 +48,7 @@
 					}
 
 				</ul>
-				<form class="d-flex" role="search">
-					<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-success" type="submit">Search</button>
-				</form>
+				
 			</div>
 		</div>
 	</nav>

@@ -60,8 +60,7 @@ namespace IdentityProjectWebApi
 				options.Cookie.HttpOnly = true;
 				options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-				options.LoginPath = "/Account/Login";
-				options.LogoutPath= "/Home";
+				options.LoginPath = "/Home/AccessDenied";
 				options.AccessDeniedPath = "/Home/AccessDenied";
 				options.SlidingExpiration = true;
 			});

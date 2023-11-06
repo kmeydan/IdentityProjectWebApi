@@ -1,0 +1,75 @@
+﻿@using IdentityProjectWebApi.Model;
+@model AdminUserUpdatedViewModel
+@{
+	ViewData["Title"] = "Detail";
+	Layout = "~/_Layout.cshtml";
+}
+
+<h1>Düzenle</h1>
+
+<div class="container mt-5">
+	<div asp-validation-summary="All" class="text-danger"></div>
+
+	<div class="row">
+		<div class="col-md-12 grid-margin stretch-card">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">@User.Identity.Name Kullanıcısını Düzenle</h4>
+					<form asp-action="Detail" asp-controller="Account" method="post" class="d-grid gap-2">
+						<div class="form-floating mb-3">
+							<input type="hidden" asp-for="Id" />
+							<input class="form-control" asp-for="Email">
+							<label asp-for="Email"></label>
+							<span asp-validation-for="Email" class="text-danger"></span>
+						</div>
+						<div class="form-floating mb-3">
+							<textarea class="form-control" asp-for="Username"></textarea>
+							<label for="floatingTextareaDisabled" asp-for="Username"></label>
+							<span asp-validation-for="Username" class="text-danger"></span>
+
+						</div>
+						<div class="form-floating mb-3">
+							<textarea class="form-control" asp-for="PhoneNumber"></textarea>
+							<label for="floatingTextareaDisabled" asp-for="PhoneNumber">Telefon Numarası</label>
+							<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+						</div>
+						<div class="form-group">
+							<label asp-for="Password"></label>
+							<input asp-for="Password" class="form-control">
+							<span asp-validation-for="Password"></span>
+						</div>
+						<div class="form-group">
+							<label asp-for="RePassword"></label>
+							<input asp-for="RePassword" class="form-control">
+							<span asp-validation-for="RePassword"></span>
+						</div>
+						<div>
+							<label asp-for="Inaktif" class="form-label"></label>
+							@if (Model.Inaktif==true)
+							{
+								<input class="form-check-input mx-3" type="checkbox" asp-for="Inaktif" checked>
+
+							}
+							else
+							{
+								<input class="form-check-input mx-3" type="checkbox" asp-for="Inaktif">
+
+							}
+						</div>
+						<div class="d-flex justify-content-between">
+							<div class="mt-2">
+								<button type="submit" class="btn btn-primary me-2">Kaydet</button>
+								<button class="btn btn-light" asp-controller="Account" asp-action="Index">Cancel</button>
+							</div>
+							<div class="mt-2">
+								@*<a asp-action="Delete" asp-controller="Account" class="btn btn-danger me-2" asp-route-userId="@Model.Id">Temizle</a>*@
+
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

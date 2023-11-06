@@ -1,0 +1,54 @@
+﻿@using IdentityProjectWebApi.Model;
+@model AdminUserCreateViewModel
+@{
+	ViewData["Title"] = "User Create";
+	Layout = "~/_Layout.cshtml";
+}
+
+
+
+<div class="card w-100">
+	<div class="card-body">
+		<h4 class="card-title">Kullanıcı Oluştur</h4>
+		<p class="card-description">
+			Admin Kullanıcısı
+		</p>
+
+		<form class="forms-sample" method="post" asp-action="Register" asp-controller="Account">
+			<div asp-validation-summary="All" class="text-danger"></div>
+
+			<div class="form-group">
+				<label asp-for="Username"></label>
+				<input asp-for="Username" class="form-control">
+				<span asp-validation-for="Username" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Email"></label>
+				<input asp-for="Email" class="form-control">
+				<span asp-validation-for="Email" class="text-danger"></span>
+
+			</div>
+			<div class="form-group">
+				<label asp-for="PhoneNumber"></label>
+				<input asp-for="PhoneNumber" class="form-control">
+				<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+			</div>
+			<div class="form-group">
+				<label asp-for="Password"></label>
+				<input asp-for="Password" class="form-control">
+				<span asp-validation-for="Password" class="text-danger"></span>
+
+			</div>
+			<div class="form-group">
+				<label asp-for="RePassword"></label>
+				<input asp-for="RePassword" class="form-control">
+				<span asp-validation-for="RePassword" class="text-danger"></span>
+
+			</div>
+
+			<button type="submit" class="btn btn-primary me-2">Submit</button>
+			<button class="btn btn-light"><a asp-action="Index" class="text-decoration-none text-black">Cancel</a> </button>
+		</form>
+	</div>
+</div>

@@ -1,3 +1,4 @@
+using IdentityProjectWebApi.CustomValidation;
 using IdentityProjectWebApi.DataAccess.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,40 +29,42 @@ namespace IdentityProjectWebApi
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddControllers();
+			services.AddMvc();
 			services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
-			services.AddDefaultIdentity<AppUser>()
-				.AddEntityFrameworkStores<AppIdentityDbContext>();
-		//	services.AddIdentity<AppUser, AppRole>(options =>
-		//	{
-		//		// Password settings.
-		//		options.Password.RequireDigit = true;
-		//		options.Password.RequireLowercase = true;
-		//		options.Password.RequireNonAlphanumeric = true;
-		//		options.Password.RequireUppercase = true;
-		//		options.Password.RequiredLength = 6;
-		//		options.Password.RequiredUniqueChars = 1;
+			services.AddIdentity<AppUser, AppRole>(options =>
+			{
+				// Password settings.
+				options.Password.RequireDigit = true;
+				options.Password.RequireLowercase = true;
+				options.Password.RequireNonAlphanumeric = true;
+				options.Password.RequireUppercase = true;
+				options.Password.RequiredLength = 6;
+				options.Password.RequiredUniqueChars = 1;
 
-		//		// Lockout settings.
-		//		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-		//		options.Lockout.MaxFailedAccessAttempts = 5;
-		//		options.Lockout.AllowedForNewUsers = true;
+				// Lockout settings.
+				options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+				options.Lockout.MaxFailedAccessAttempts = 5;
+				options.Lockout.AllowedForNewUsers = true;
 
-		//		// User settings.
-		//		options.User.AllowedUserNameCharacters =
-		//		"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-		//		options.User.RequireUniqueEmail = false;
-		//	});
-		//	services.ConfigureApplicationCookie(options =>
-		//	{
-		//		// Cookie settings
-		//		options.Cookie.HttpOnly = true;
-		//		options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+				// User settings.
+				options.User.AllowedUserNameCharacters =
+				"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+				options.User.RequireUniqueEmail = false;
+			})
+				.AddEntityFrameworkStores<AppIdentityDbContext>()
+				.AddErrorDescriber<ErrorDescriber>();
 
-		//		options.LoginPath = "/Identity/Account/Login";
-		//		options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-		//		options.SlidingExpiration = true;
-		//	});
+			services.ConfigureApplicationCookie(options =>
+			{
+				// Cookie settings
+				options.Cookie.HttpOnly = true;
+				options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+				options.LoginPath = "/Account/Login";
+				options.LogoutPath= "/Home";
+				options.AccessDeniedPath = "/Home/AccessDenied";
+				options.SlidingExpiration = true;
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,10 +81,13 @@ namespace IdentityProjectWebApi
 			app.UseAuthentication();
 			app.UseAuthorization();
 
+
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllers();
+				endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 			});
+
+
 		}
 	}
 }

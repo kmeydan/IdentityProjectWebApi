@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/_Layout.cshtml";
+}
+
+@if (!User.Identity.IsAuthenticated)
+{
+		<h1>Lütfen Giriş Yaptıktan Sonra Devam Ediniz</h1>
+
+}
+else
+{
+		<h1>Linklerden Devam Et</h1>
+
+}

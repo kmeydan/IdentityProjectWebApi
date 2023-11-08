@@ -1,0 +1,44 @@
+﻿@using IdentityProject.Model;
+@model RoleList
+@{
+    ViewData["Title"] = "Rols";
+    Layout = "~/_Layout.cshtml";
+}
+<div class="container mt-5">
+	<div class="col-lg-12 justify-content-between grid-margin stretch-card">
+
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title">Rol Sayısı {@Model.Roles.Count} </h4>
+				<div class="table-responsive text-center">
+					<table class="table table-striped table-responsive-lg">
+						<thead>
+							<tr>
+								<th class="col-1">
+									Rol Adı
+								</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model.Roles)
+							{
+								<tr>
+
+									<td>
+										<p>@item.Name</p>
+									</td>
+
+								</tr>
+							}
+
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

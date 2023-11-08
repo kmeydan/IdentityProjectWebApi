@@ -1,0 +1,60 @@
+﻿@using IdentityProject.Model;
+@model UsersAddRoleViewModel
+@{
+	ViewData["Title"] = "UserCreateRole";
+	Layout = "~/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+	<div asp-validation-summary="All" class="text-danger"></div>
+
+	<div class="row">
+		<div class="col-md-12 grid-margin stretch-card">
+			<div class="card">
+				<div class="card-body">
+					<form asp-action="UserCreateRole" asp-controller="Account" method="post" class="d-grid gap-2">
+						<div class="input-group input-group-lg flex-nowrap">
+							<input type="hidden" asp-for="appUser.Id" />
+							<span class="input-group-text w-25" id="addon-wrapping">Username :</span>
+							<input type="text" class="form-control" placeholder="Username" asp-for="appUser.Name" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+						</div>
+						<div class="input-group input-group-lg flex-nowrap">
+							<span class="input-group-text w-25" id="addon-wrapping">Email :</span>
+							<input type="text" class="form-control" asp-for="appUser.Email" aria-describedby="addon-wrapping" disabled>
+						</div>
+						<div class="input-group input-group-lg flex-nowrap">
+							<span class="input-group-text w-25" id="addon-wrapping">Mevcut Role :</span>
+							@if (Model.appUser.Role==null){<input type="text" class="form-control" aria-describedby="addon-wrapping" disabled>}
+							else{<input type="text" class="form-control" asp-for="appUser.Role" aria-describedby="addon-wrapping" disabled>}
+						</div>
+						<div class="form-group">
+							<div class="form-group">
+								<label>Role Seç</label>
+
+								<select class="form-control" name="roleId">
+									<option>Seçiniz</option>
+									@foreach (var item in Model.roleLists)
+									{
+										<option value="@item.Value">@item.Text</option>
+
+									}
+								</select>
+
+							</div>
+							<!-- /.input group -->
+						</div>
+
+
+
+						<div class="d-flex justify-content-between">
+							<div class="mt-2">
+								<button type="submit" class="btn btn-primary me-2">Kaydet</button>
+								<button class="btn btn-light" asp-controller="Account" asp-action="Users">Cancel</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

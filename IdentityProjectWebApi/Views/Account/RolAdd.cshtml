@@ -1,0 +1,24 @@
+﻿@using IdentityProjectWebApi.DataAccess.Identity;
+@model AppRole
+@{
+    ViewData["Title"] = "RolAdd";
+    Layout = "~/_Layout.cshtml";
+}
+
+
+<div class="card w-100">
+	<div class="card-body">
+		<h4 class="card-title">Roll Oluştur</h4>
+		<form class="forms-sample" method="post" asp-action="RolAdd" asp-controller="Account">
+
+			<div class="form-group mb-3">
+				<label asp-for="Name">Rol Adı</label>
+				<input asp-for="Name" class="form-control">
+				<span asp-validation-for="Name" class="text-danger"></span>
+			</div>
+
+			<button type="submit" class="btn btn-primary me-2">Submit</button>
+			<button class="btn btn-light"><a asp-action="Users" asp-controller="Account" class="text-decoration-none text-black">Cancel</a> </button>
+		</form>
+	</div>
+</div>

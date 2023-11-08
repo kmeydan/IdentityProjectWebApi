@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+	<nav class="navbar navbar-expand-lg bg-body-tertiary mb-3" >
 
 		<div class="container-fluid">
 			@if (User.Identity.IsAuthenticated)
@@ -40,6 +40,12 @@
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" asp-action="Users" asp-controller="Account">Kullanıcılar</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" asp-action="RolAdd" asp-controller="Account">Rol Ekle</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" asp-action="Rols" asp-controller="Account">Roller</a>
 						</li>
 
 						<li class="nav-item">
